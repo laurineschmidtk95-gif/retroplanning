@@ -133,11 +133,11 @@
 
     <script>
         const tasks = [
-            { id: 'A', name: 'Prise de contact et 1er rendez-vous client (brief)', dependency: '-', duration: 4, start: 1, end: 4 },
-            { id: 'B', name: 'Recherche documentaire sur le musée et le public cible', dependency: 'A', duration: 8, start: 5, end: 12 },
-            { id: 'C', name: 'Définition du concept de médiation (brainstorming, croquis)', dependency: 'A', duration: 4, start: 5, end: 8 },
-            { id: 'D', name: 'Validation du concept avec le client', dependency: 'A', duration: 4, start: 5, end: 8 },
-            { id: 'E', name: 'Conception graphique (maquettes, visuels, supports)', dependency: 'B', duration: 4, start: 13, end: 16 },
+            { id: 'A', name: 'Prise de contact et 1er rendez-vous client', dependency: '-', duration: 4, start: 1, end: 4 },
+            { id: 'B', name: 'Recherche documentaire sur le musée et la cible', dependency: 'A', duration: 8, start: 5, end: 12 },
+            { id: 'C', name: 'Brainstorming et croquis', dependency: 'A', duration: 4, start: 5, end: 8 },
+            { id: 'D', name: 'Validation avec le client', dependency: 'A', duration: 4, start: 5, end: 8 },
+            { id: 'E', name: 'Conception graphique', dependency: 'B', duration: 4, start: 13, end: 16 },
             { id: 'F', name: 'Modélisation ou prototypage de l\'objet de médiation', dependency: 'E', duration: 1, start: 17, end: 17 },
             { id: 'G', name: 'Tests et ajustements du prototype', dependency: 'F', duration: 1, start: 18, end: 18 },
             { id: 'H', name: 'Finalisation du design et des supports', dependency: 'G', duration: 3, start: 19, end: 21 },
@@ -146,7 +146,7 @@
             { id: 'K', name: 'Ajustements finaux suite aux retours', dependency: 'F', duration: 8, start: 18, end: 25 },
             { id: 'L', name: 'Production/livraison de l\'objet de médiation', dependency: 'I', duration: 24, start: 25, end: 48 },
             { id: 'M', name: 'Communication autour de la présentation finale', dependency: 'I', duration: 1, start: 25, end: 25 },
-            { id: 'N', name: 'Installation et mise en place de l\'objet dans l\'espace d\'exposition', dependency: 'M', duration: 4, start: 26, end: 29 },
+            { id: 'N', name: 'Mise en place de l\'objet dans l\'espace d\'exposition', dependency: 'M', duration: 4, start: 26, end: 29 },
             { id: 'O', name: 'Présentation orale ou exposition finale', dependency: 'N', duration: 2, start: 30, end: 31 },
             { id: 'P', name: 'Bilan et retour d\'expérience (évaluation finale)', dependency: 'K', duration: 1, start: 26, end: 26 }
         ];
