@@ -1,231 +1,218 @@
-import React from 'react';
-
-const GanttChart = () => {
-  const tasks = [
-    { id: 'A', name: 'Prise de contact et 1er rendez-vous client (brief)', dependency: '-', duration: 4, start: 1, end: 4, color: '#3b82f6' },
-    { id: 'B', name: 'Recherche documentaire sur le musée et le public cible', dependency: 'A', duration: 8, start: 5, end: 12, color: '#3b82f6' },
-    { id: 'C', name: 'Définition du concept de médiation (brainstorming, croquis)', dependency: 'A', duration: 4, start: 5, end: 8, color: '#3b82f6' },
-    { id: 'D', name: 'Validation du concept avec le client', dependency: 'A', duration: 4, start: 5, end: 8, color: '#3b82f6' },
-    { id: 'E', name: 'Conception graphique (maquettes, visuels, supports)', dependency: 'B', duration: 4, start: 13, end: 16, color: '#3b82f6' },
-    { id: 'F', name: 'Modélisation ou prototypage de l\'objet de médiation', dependency: 'E', duration: 1, start: 17, end: 17, color: '#3b82f6' },
-    { id: 'G', name: 'Tests et ajustements du prototype', dependency: 'F', duration: 1, start: 18, end: 18, color: '#3b82f6' },
-    { id: 'H', name: 'Finalisation du design et des supports', dependency: 'G', duration: 3, start: 19, end: 21, color: '#3b82f6' },
-    { id: 'I', name: 'Préparation du dossier de présentation', dependency: 'H', duration: 3, start: 22, end: 24, color: '##3b82f6' },
-    { id: 'J', name: 'Rendez-vous de validation finale avec le musée', dependency: 'F', duration: 4, start: 18, end: 21, color: '#3b82f6' },
-    { id: 'K', name: 'Ajustements finaux suite aux retours', dependency: 'F', duration: 8, start: 18, end: 25, color: '#3b82f6' },
-    { id: 'L', name: 'Production/livraison de l\'objet de médiation', dependency: 'I', duration: 24, start: 25, end: 48, color: '#3b82f6' },
-    { id: 'M', name: 'Communication autour de la présentation finale', dependency: 'I', duration: 1, start: 25, end: 25, color: '#3b82f6' },
-    { id: 'N', name: 'Installation et mise en place de l\'objet dans l\'espace d\'exposition', dependency: 'M', duration: 4, start: 26, end: 29, color: '#3b82f6' },
-    { id: 'O', name: 'Présentation orale ou exposition finale', dependency: 'N', duration: 2, start: 30, end: 31, color: '#3b82f6' },
-    { id: 'P', name: 'Bilan et retour d\'expérience (évaluation finale)', dependency: 'K', duration: 1, start: 26, end: 26, color: '#3b82f6' }
-  ];
-
-  const maxWeek = 48;
-  const cellWidth = 24;
-  const rowHeight = 50;
-  const labelWidth = 380;
-  const headerHeight = 40;
-
-  const generatePDF = () => {
-    const ganttSVG = document.getElementById('gantt-svg');
-    const windowPrint = window.open('', '', 'width=1400,height=900');
-    
-    windowPrint.document.write(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Rétroplanning - Projet Musée</title>
-        <style>
-          body {
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rétroplanning - Musée Guimet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-          }
-          h1 {
-            color: #1f2937;
-            font-size: 24px;
-            margin-bottom: 20px;
-          }
-          @media print {
-            body { margin: 10px; }
-            @page { size: landscape; margin: 10mm; }
-          }
-        </style>
-      </head>
-      <body>
-        <h1>Rétroplanning - Projet de Médiation Muséale</h1>
-        ${ganttSVG.outerHTML}
-      </body>
-      </html>
-    `);
-    
-    windowPrint.document.close();
-    windowPrint.focus();
-    
-    setTimeout(() => {
-      windowPrint.print();
-      windowPrint.close();
-    }, 250);
-  };
-
-  return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Rétroplanning de gantt - Musee Guimet</h1>
-          <button 
-            onClick={generatePDF}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition-colors duration-200 flex items-center gap-2"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-            </svg>
-            Générer PDF
-          </button>
+            background-color: #f9fafb;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 30px;
+        }
+        
+        .btn-pdf {
+            background-color: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-pdf:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .gantt-wrapper {
+            overflow-x: auto;
+        }
+        
+        #gantt-svg {
+            display: block;
+        }
+        
+        .info-section {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .info-box {
+            background-color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .info-box h3 {
+            color: #374151;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .info-box div {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #4b5563;
+        }
+        
+        .info-box span {
+            font-weight: 600;
+            color: #6b7280;
+        }
+        
+        @media print {
+            body {
+                padding: 0;
+            }
+            .btn-pdf, .info-section {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="btn-pdf" onclick="generatePDF()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                Générer PDF
+            </button>
         </div>
         
-        <div id="gantt-content">
-          <div className="overflow-x-auto">
-            <div className="inline-block min-w-full">
-              <svg id="gantt-svg" width={labelWidth + maxWeek * cellWidth} height={headerHeight + tasks.length * rowHeight + 20}>
-                {/* Header avec les semaines */}
-                <g>
-                  <rect x="0" y="0" width={labelWidth} height={headerHeight} fill="#1f2937" />
-                  <text x="10" y={headerHeight / 2 + 5} fill="white" fontWeight="bold" fontSize="14">Tâches</text>
-                  
-                  {[...Array(maxWeek)].map((_, i) => (
-                    <g key={i}>
-                      <rect 
-                        x={labelWidth + i * cellWidth} 
-                        y="0" 
-                        width={cellWidth} 
-                        height={headerHeight} 
-                        fill={i % 5 === 4 ? "#374151" : "#1f2937"}
-                        stroke="#4b5563"
-                        strokeWidth="0.5"
-                      />
-                      <text 
-                        x={labelWidth + i * cellWidth + cellWidth / 2} 
-                        y={headerHeight / 2 + 5} 
-                        fill="white" 
-                        textAnchor="middle"
-                        fontSize="11"
-                      >
-                        {i + 1}
-                      </text>
-                    </g>
-                  ))}
-                </g>
-
-                {/* Grille et tâches */}
-                {tasks.map((task, idx) => {
-                  const y = headerHeight + idx * rowHeight;
-                  
-                  return (
-                    <g key={task.id}>
-                      {/* Ligne de fond */}
-                      <rect 
-                        x="0" 
-                        y={y} 
-                        width={labelWidth + maxWeek * cellWidth} 
-                        height={rowHeight} 
-                        fill={idx % 2 === 0 ? "#f9fafb" : "#ffffff"}
-                        stroke="#e5e7eb"
-                        strokeWidth="0.5"
-                      />
-                      
-                      {/* Label de la tâche */}
-                      <text 
-                        x="10" 
-                        y={y + rowHeight / 2 - 2} 
-                        fill="#1f2937" 
-                        fontWeight="600"
-                        fontSize="12"
-                      >
-                        {task.id} - {task.name.length > 48 ? task.name.substring(0, 48) + '...' : task.name}
-                      </text>
-                      <text 
-                        x="10" 
-                        y={y + rowHeight / 2 + 12} 
-                        fill="#6b7280" 
-                        fontSize="10"
-                      >
-                        Durée: {task.duration} sem. | Dépendance: {task.dependency}
-                      </text>
-                      
-                      {/* Grille verticale */}
-                      {[...Array(maxWeek)].map((_, i) => (
-                        <rect 
-                          key={i}
-                          x={labelWidth + i * cellWidth} 
-                          y={y} 
-                          width={cellWidth} 
-                          height={rowHeight} 
-                          fill="none"
-                          stroke="#e5e7eb"
-                          strokeWidth="0.5"
-                        />
-                      ))}
-                      
-                      {/* Barre de la tâche */}
-                      <rect 
-                        x={labelWidth + (task.start - 1) * cellWidth + 2} 
-                        y={y + 10} 
-                        width={(task.end - task.start + 1) * cellWidth - 4} 
-                        height={rowHeight - 20} 
-                        fill={task.color}
-                        rx="4"
-                        opacity="0.85"
-                      />
-                      
-                      {/* Texte sur la barre */}
-                      <text 
-                        x={labelWidth + (task.start - 1) * cellWidth + ((task.end - task.start + 1) * cellWidth) / 2} 
-                        y={y + rowHeight / 2 + 4} 
-                        fill="white" 
-                        textAnchor="middle"
-                        fontWeight="600"
-                        fontSize="11"
-                      >
-                        S{task.start}-S{task.end}
-                      </text>
-                    </g>
-                  );
-                })}
-              </svg>
-            </div>
-          </div>
-
-          {/* Légende et phases du projet */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <h3 className="font-semibold text-gray-700 mb-3">Informations du projet</h3>
-              <div className="space-y-2 text-sm">
-                <div>
-                  <span className="font-medium text-gray-600">Durée totale:</span> 48 semaines
-                </div>
-                <div>
-                  <span className="font-medium text-gray-600">Nombre de tâches:</span> 16
-                </div>
-                <div>
-                  <span className="font-medium text-gray-600">Chemin critique:</span> A → B → E → F → G → H → I → L
-                </div>
-              </div>
-            </div>
-
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <h3 className="font-semibold text-gray-700 mb-3">Phases principales</h3>
-              <div className="space-y-2 text-sm">
-                <div>📋 <span className="font-medium">Phase 1:</span> Cadrage (S1-S8)</div>
-                <div>🎨 <span className="font-medium">Phase 2:</span> Conception (S9-S24)</div>
-                <div>🏭 <span className="font-medium">Phase 3:</span> Production (S25-S48)</div>
-                <div>🎯 <span className="font-medium">Phase 4:</span> Finalisation (S26-S31)</div>
-              </div>
-            </div>
-          </div>
+        <div class="gantt-wrapper">
+            <svg id="gantt-svg"></svg>
         </div>
-      </div>
+        
+        <div class="info-section">
+            <div class="info-box">
+                <h3>Informations du projet</h3>
+                <div><span>Durée totale:</span> 48 semaines</div>
+                <div><span>Nombre de tâches:</span> 16</div>
+                <div><span>Chemin critique:</span> A → B → E → F → G → H → I → L</div>
+            </div>
+            
+            <div class="info-box" style="background-color: #dbeafe;">
+                <h3>Phases principales</h3>
+                <div>📋 <span>Phase 1:</span> Cadrage (S1-S8)</div>
+                <div>🎨 <span>Phase 2:</span> Conception (S9-S24)</div>
+                <div>🏭 <span>Phase 3:</span> Production (S25-S48)</div>
+                <div>🎯 <span>Phase 4:</span> Finalisation (S26-S31)</div>
+            </div>
+        </div>
     </div>
-  );
-};
 
-export default GanttChart;
+    <script>
+        const tasks = [
+            { id: 'A', name: 'Prise de contact et 1er rendez-vous client (brief)', dependency: '-', duration: 4, start: 1, end: 4 },
+            { id: 'B', name: 'Recherche documentaire sur le musée et le public cible', dependency: 'A', duration: 8, start: 5, end: 12 },
+            { id: 'C', name: 'Définition du concept de médiation (brainstorming, croquis)', dependency: 'A', duration: 4, start: 5, end: 8 },
+            { id: 'D', name: 'Validation du concept avec le client', dependency: 'A', duration: 4, start: 5, end: 8 },
+            { id: 'E', name: 'Conception graphique (maquettes, visuels, supports)', dependency: 'B', duration: 4, start: 13, end: 16 },
+            { id: 'F', name: 'Modélisation ou prototypage de l\'objet de médiation', dependency: 'E', duration: 1, start: 17, end: 17 },
+            { id: 'G', name: 'Tests et ajustements du prototype', dependency: 'F', duration: 1, start: 18, end: 18 },
+            { id: 'H', name: 'Finalisation du design et des supports', dependency: 'G', duration: 3, start: 19, end: 21 },
+            { id: 'I', name: 'Préparation du dossier de présentation', dependency: 'H', duration: 3, start: 22, end: 24 },
+            { id: 'J', name: 'Rendez-vous de validation finale avec le musée', dependency: 'F', duration: 4, start: 18, end: 21 },
+            { id: 'K', name: 'Ajustements finaux suite aux retours', dependency: 'F', duration: 8, start: 18, end: 25 },
+            { id: 'L', name: 'Production/livraison de l\'objet de médiation', dependency: 'I', duration: 24, start: 25, end: 48 },
+            { id: 'M', name: 'Communication autour de la présentation finale', dependency: 'I', duration: 1, start: 25, end: 25 },
+            { id: 'N', name: 'Installation et mise en place de l\'objet dans l\'espace d\'exposition', dependency: 'M', duration: 4, start: 26, end: 29 },
+            { id: 'O', name: 'Présentation orale ou exposition finale', dependency: 'N', duration: 2, start: 30, end: 31 },
+            { id: 'P', name: 'Bilan et retour d\'expérience (évaluation finale)', dependency: 'K', duration: 1, start: 26, end: 26 }
+        ];
+
+        const maxWeek = 48;
+        const cellWidth = 24;
+        const rowHeight = 50;
+        const labelWidth = 380;
+        const headerHeight = 40;
+        const taskColor = '#3b82f6';
+
+        function drawGantt() {
+            const svg = document.getElementById('gantt-svg');
+            const svgWidth = labelWidth + maxWeek * cellWidth;
+            const svgHeight = headerHeight + tasks.length * rowHeight + 20;
+            
+            svg.setAttribute('width', svgWidth);
+            svg.setAttribute('height', svgHeight);
+            
+            let svgContent = '';
+            
+            // Header avec les semaines
+            svgContent += `<rect x="0" y="0" width="${labelWidth}" height="${headerHeight}" fill="#1f2937"/>`;
+            svgContent += `<text x="10" y="${headerHeight / 2 + 5}" fill="white" font-weight="bold" font-size="14">Tâches</text>`;
+            
+            for (let i = 0; i < maxWeek; i++) {
+                const x = labelWidth + i * cellWidth;
+                const bgColor = i % 5 === 4 ? '#374151' : '#1f2937';
+                svgContent += `<rect x="${x}" y="0" width="${cellWidth}" height="${headerHeight}" fill="${bgColor}" stroke="#4b5563" stroke-width="0.5"/>`;
+                svgContent += `<text x="${x + cellWidth / 2}" y="${headerHeight / 2 + 5}" fill="white" text-anchor="middle" font-size="11">${i + 1}</text>`;
+            }
+            
+            // Tâches
+            tasks.forEach((task, idx) => {
+                const y = headerHeight + idx * rowHeight;
+                const bgColor = idx % 2 === 0 ? '#f9fafb' : '#ffffff';
+                
+                // Ligne de fond
+                svgContent += `<rect x="0" y="${y}" width="${svgWidth}" height="${rowHeight}" fill="${bgColor}" stroke="#e5e7eb" stroke-width="0.5"/>`;
+                
+                // Label de la tâche
+                const truncatedName = task.name.length > 48 ? task.name.substring(0, 48) + '...' : task.name;
+                svgContent += `<text x="10" y="${y + rowHeight / 2 - 2}" fill="#1f2937" font-weight="600" font-size="12">${task.id} - ${truncatedName}</text>`;
+                svgContent += `<text x="10" y="${y + rowHeight / 2 + 12}" fill="#6b7280" font-size="10">Durée: ${task.duration} sem. | Antériorité: ${task.dependency}</text>`;
+                
+                // Grille verticale
+                for (let i = 0; i < maxWeek; i++) {
+                    const x = labelWidth + i * cellWidth;
+                    svgContent += `<rect x="${x}" y="${y}" width="${cellWidth}" height="${rowHeight}" fill="none" stroke="#e5e7eb" stroke-width="0.5"/>`;
+                }
+                
+                // Barre de la tâche (sans texte)
+                const barX = labelWidth + (task.start - 1) * cellWidth + 2;
+                const barWidth = (task.end - task.start + 1) * cellWidth - 4;
+                svgContent += `<rect x="${barX}" y="${y + 10}" width="${barWidth}" height="${rowHeight - 20}" fill="${taskColor}" rx="4" opacity="0.85"/>`;
+            });
+            
+            svg.innerHTML = svgContent;
+        }
+        
+        function generatePDF() {
+            window.print();
+        }
+        
+        // Dessiner le Gantt au chargement
+        drawGantt();
+    </script>
+</body>
+</html>
